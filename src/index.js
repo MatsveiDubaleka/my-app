@@ -16,26 +16,27 @@ import './index.css';
 
 function Square(props) {
   return (
-    <button className='square' onClick={props.onClick}>
+    <button className="square" onClick={props.onClick}>
       {props.value}
     </button>
-  )
+  );
 }
 
 class Board extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       squares: Array(9).fill(null),
       xIsNext: true,
-    }
+    };
   }
 
   handleClick(i) {
     const squares = this.state.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
       return;
-    }    
+    }
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       squares: squares,
       xIsNext: !this.state.xIsNext,
@@ -43,9 +44,11 @@ class Board extends React.Component {
   }
 
   renderSquare(i) {
-    return (<Square 
-      value={this.state.squares[i]}
-      onClick={() => this.handleClick(i)} />
+    return (
+      <Square
+        value={this.state.squares[i]}
+        onClick={() => this.handleClick(i)}
+      />
     );
   }
 
@@ -53,9 +56,9 @@ class Board extends React.Component {
     const winner = calculateWinner(this.state.squares);
     let status;
     if (winner) {
-      status = 'Выиграл ' + winner;
+      status = 'Winner: ' + winner;
     } else {
-      status = 'Следующий ход: ' + (this.state.xIsNext ? 'X' : 'O');
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
 
     return (
